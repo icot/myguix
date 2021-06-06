@@ -3,11 +3,16 @@
  (gnu packages kerberos)
  (gnu packages gnuzilla))
 
+(define my-icecat
+  (package
+    (inherit icecat)
+    (name "my-icecat")))
+
 (define replace-mit-krb5
   ;;
-  (package-input-rewriting `((,mit-krb5 . ,my-mit-krb5))))
+  (package-input-rewriting `((,mit-krb5 . ,heimdal))))
 
-(define my-icecat
+(define my-icecat-t
   (replace-mit-krb5 icecat))
 
-my-icecat
+my-icecat-t

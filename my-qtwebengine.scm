@@ -430,7 +430,12 @@ and binaries removed, and adds modular support for using system libraries.")
   (package-input-rewriting `((,qtwebengine . ,my-qtwebengine))))
 
 (define my-qutebrowser
-  (replace-qtwebengine qutebrowser))
+  (package
+    (inherit qutebrowser)
+    (name "my-qutebrowser")))
+
+(define my-qutebrowser-t
+  (replace-qtwebengine my-qutebrowser))
 
 my-qtwebengine
-my-qutebrowser
+my-qutebrowser-t
