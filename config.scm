@@ -7,7 +7,7 @@
              (gnu packages chromium)
              (gnu packages wm)
              (gnu packages security-token)
-             (gnu packages android)
+             (gnu services docker)
              (nongnu packages linux)       ; nongnu channel
              (nongnu system linux-initrd)
              (guix channels)
@@ -186,6 +186,7 @@
               (xorg-configuration
                 (keyboard-layout keyboard-layout)))
             (screen-locker-service i3lock)
+            (service docker-service-type)
             %my-kerberos
             (udev-rules-service 'myyubis %yubikey-udev-rules))
       %custom-services-with-udev))
