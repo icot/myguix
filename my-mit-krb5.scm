@@ -6,7 +6,9 @@
              ((guix licenses) #:prefix license:)
              (gnu packages)
              (gnu packages bison)
-             (gnu packages perl))
+             (gnu packages perl)
+             (gnu packages kerberos)
+             (gnu packages gnuzilla))
 
 (define-public my-mit-krb5
   (package
@@ -86,4 +88,12 @@ cryptography.")
     (home-page "https://web.mit.edu/kerberos/")
     (properties '((cpe-name . "kerberos")))))
 
+(define replace-mit-krb5
+  ;;
+  (package-input-rewriting `((,mit-krb5 . ,my-mit-krb5))))
+
+(define my-icecat
+  (replace-mit-krb5 icecat))
+
 my-mit-krb5
+my-icecat
