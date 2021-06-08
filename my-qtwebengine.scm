@@ -344,7 +344,6 @@
        ("libxtst" ,libxtst)
        ("mesa" ,mesa)
        ("minizip" ,minizip)
-       ("mit-krb5" ,mit-krb5)
        ("heimdal" ,heimdal)
        ("nss" ,nss)
        ("opus" ,opus)
