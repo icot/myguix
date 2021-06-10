@@ -80,7 +80,10 @@
 
 
 (define %my-packages
-  '(
+  '(;; Emacs 
+    "emacs"
+    "emacs-exwm"
+    "emacs-desktop-environment"
     ;; WM/Env
     "picom"
     "i3-gaps"
@@ -112,6 +115,7 @@
     "zsh"
     "strace"
     "lsof"
+    "xxd"
     "libu2f-host"
     "nss-certs"))
 
