@@ -25,7 +25,9 @@
                   "SUBSYSTEM==\"hidraw\", "
                   "ATTRS{idVendor}==\"1050\", "
                   "ATTRS{idProduct}==\"0113|0114|0115|0116|0120|0200|0402|0403|0406|0407|0410\", "
-                  "TAG+=\"uaccess\"")))
+                  "TAG+=\"uaccess\", "
+                  "GROUP=\"dialout\", "
+                  "MODE=\"0660\"")))
 
 (define %yubikey-udev-rule2
   (udev-rule
@@ -79,6 +81,7 @@
 (define %my-packages
   '(
     ;; WM/Env
+    "picom"
     "i3-gaps"
     "i3lock"
     "polybar"
@@ -86,6 +89,7 @@
     "kitty"
     "xmodmap"
     "xset"
+    "xrandr"
     "rofi"
     "rlwrap"
     "pasystray"
@@ -104,6 +108,10 @@
     "file"
     "icecat"
     "qutebrowser"
+    "zsh"
+    "strace"
+    "lsof"
+    "libu2f-host"
     "nss-certs"))
 
 ;; TODO
@@ -164,6 +172,9 @@
              (type "ext4"))
            %base-file-systems))
 
+  ;; Add plugdev group used by libu2f-host
+  (groups (append (list "plugdev") %base-groups))
+
   (users (cons* (user-account
                   (name "spike")
                   (comment "Spike")
@@ -171,7 +182,7 @@
                   (shell (file-append zsh "/bin/zsh"))
                   (home-directory "/home/spike")
                   (supplementary-groups
-                    '("wheel" "netdev" "audio" "video" "docker" "dialout")))
+                    '("wheel" "netdev" "audio" "video" "docker" "dialout" "plugdev")))
                 %base-user-accounts))
 
   (sudoers-file %my-sudoers)
