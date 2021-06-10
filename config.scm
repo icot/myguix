@@ -170,7 +170,7 @@
                   (shell (file-append zsh "/bin/zsh"))
                   (home-directory "/home/spike")
                   (supplementary-groups
-                    '("wheel" "netdev" "audio" "video" "docker")))
+                    '("wheel" "netdev" "audio" "video" "docker" "dialout")))
                 %base-user-accounts))
 
   (sudoers-file %my-sudoers)
