@@ -178,9 +178,10 @@
            %base-file-systems))
 
   ;; Add plugdev group used by libu2f-host
-  (groups (append (list "plugdev") %base-groups))
+  (groups (append (list (user-group (name "plugdev") (system? #t))) %base-groups))
 
-  (users (cons* (user-account
+  (users (append
+          (list (user-account
                   (name "spike")
                   (comment "Spike")
                   (group "users")
@@ -188,6 +189,14 @@
                   (home-directory "/home/spike")
                   (supplementary-groups
                     '("wheel" "netdev" "audio" "video" "docker" "dialout" "plugdev")))
+                (user-account
+                  (name "spikemacs")
+                  (comment "Spike Emacs")
+                  (group "users")
+                  (shell (file-append zsh "/bin/zsh"))
+                  (home-directory "/home/spikemacs")
+                  (supplementary-groups
+                    '("wheel" "netdev" "audio" "video" "docker" "dialout" "plugdev"))))
                 %base-user-accounts))
 
   (sudoers-file %my-sudoers)
