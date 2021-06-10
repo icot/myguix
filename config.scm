@@ -8,6 +8,7 @@
              (gnu packages wm)
              (gnu packages security-token)
              (gnu services security-token)
+             (gnu services auditd)
              (gnu services docker)
              (nongnu packages linux)       ; nongnu channel
              (nongnu system linux-initrd)
@@ -202,6 +203,8 @@
             (service docker-service-type)
             (service pcscd-service-type) ;; yubikey + gpg
             %my-kerberos
+            (service auditd-service-type)
+            (bluetooth-service )
             (udev-rules-service 'myyubis %yubikey-udev-rules))
       %custom-services-with-udev))
 
