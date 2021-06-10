@@ -21,7 +21,7 @@
 ;; Yubikeys: https://github.com/Yubico/libu2f-host/blob/master/70-u2f.rules
 (define %yubikey-udev-rule1
   (udev-rule
-   "90-yubikey"
+   "71-yubikey.rules"
    (string-append "KERNEL==\"hidraw\", "
                   "SUBSYSTEM==\"hidraw\", "
                   "ATTRS{idVendor}==\"1050\", "
@@ -32,14 +32,14 @@
 
 (define %yubikey-udev-rule2
   (udev-rule
-   "91-myyubikey"
+   "71-myyubikey.rules"
    (string-append "SUBSYSTEM==\"usb\", "
                   "ATTRS{idVendor}==\"1050\", "
                   "ATTRS{idProduct}==\"0113|0114|0115|0116|0120|0200|0402|0403|0406|0407|0410\", "
                   "MODE=0666")))
 
 (define %yubikey-udev-rules
- (file->udev-rule "70-u2f" (file-append libu2f-host "/lib/udev/rules.d/70-u2f.rules")))
+ (file->udev-rule "70-u2f.rules" (file-append libu2f-host "/lib/udev/rules.d/70-u2f.rules")))
 
 ;;;; Custom definitions
 (define %my-sudoers
