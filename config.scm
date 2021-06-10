@@ -36,7 +36,8 @@
                   "MODE=0666")))
 
 (define %yubikey-udev-rules
- (file->udev-rule "99-myu2f" (file-append libu2f-host "/lib/udev/rules.d/70-u2f.rules")))
+ (file->udev-rule "70-u2f" (file-append libu2f-host "/lib/udev/rules.d/70-u2f.rules")))
+
 ;;;; Custom definitions
 (define %my-sudoers
   (plain-file "sudoers"
