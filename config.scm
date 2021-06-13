@@ -10,6 +10,9 @@
              (gnu services security-token)
              (gnu services auditd)
              (gnu services docker)
+             (gnu services cups)
+             (gnu services sddm)
+             (gnu packages cups)
              (nongnu packages linux)       ; nongnu channel
              (nongnu system linux-initrd)
              (guix channels)
@@ -32,11 +35,11 @@
 
 (define %yubikey-udev-rule2
   (udev-rule
-   "71-myyubikey.rules"
+   "72-myyubikey.rules"
    (string-append "SUBSYSTEM==\"usb\", "
                   "ATTRS{idVendor}==\"1050\", "
                   "ATTRS{idProduct}==\"0113|0114|0115|0116|0120|0200|0402|0403|0406|0407|0410\", "
-                  "MODE=0666")))
+                  "MODE=\"0666\"")))
 
 (define %yubikey-udev-rules
  (file->udev-rule "70-u2f.rules" (file-append libu2f-host "/lib/udev/rules.d/70-u2f.rules")))
@@ -80,11 +83,17 @@
 
 
 (define %my-packages
-  '(;; Emacs 
+  '(;; Display manager & related
+    "sddm"
+    "guix-simplyblack-sddm-theme"
+    ;; Emacs 
     "emacs"
     "emacs-exwm"
     "emacs-desktop-environment"
-    ;; WM/Env
+    ;; Appimages
+    "fuse"
+    ;; WM/Env/Misc
+    "setxkbmap"
     "picom"
     "i3-gaps"
     "i3lock"
@@ -145,6 +154,18 @@
                       (kdc "cerndc.cern.ch")
                       (kpasswd-server "cerndc.cern.ch")))))))
 
+;; Printers
+(define %my-printers
+ (service cups-service-type
+  (cups-configuration
+   (web-interface? #t)
+   (extensions
+    (list cups-filters hplip-minimal)))))
+
+(define %my-extra-files
+  (list (extra-special-file "/lib64/ld-linux-x86-64.so.2"
+                            (file-append glibc "/lib/ld-linux-x86-64.so.2"))))
+
 ;; System
 (operating-system
   (locale "en_US.utf8")
@@ -175,6 +196,7 @@
                (uuid "1114202d-0c6f-425c-bc22-8d6b56978f0c"
                      'ext4))
              (type "ext4"))
+           %fuse-control-file-system
            %base-file-systems))
 
   ;; Add plugdev group used by libu2f-host
@@ -209,16 +231,26 @@
   (services
     (append
       (list (service openssh-service-type)
-            (set-xorg-configuration
-              (xorg-configuration
-                (keyboard-layout keyboard-layout)))
+            (service sddm-service-type)
+            ;(set-xorg-configuration
+              ;(xorg-configuration
+                ;(keyboard-layout keyboard-layout)))
             (screen-locker-service i3lock)
             (service docker-service-type)
             (service pcscd-service-type) ;; yubikey + gpg
             %my-kerberos
             (service auditd-service-type)
-            (bluetooth-service )
+            (bluetooth-service)
+            %my-printers
             (udev-rules-service 'myyubis %yubikey-udev-rules))
-      %custom-services-with-udev))
+      %my-extra-files
+      (remove (lambda (service)
+                (or (eq? (service-kind service) gdm-service-type)
+                    #f))
+              %custom-services-with-udev)))
 
   (name-service-switch %mdns-host-lookup-nss))
+
+;(remove (lambda (service)
+;          (or (eq? (service-kind service) (gdm-service-type))
+;              nil)))
